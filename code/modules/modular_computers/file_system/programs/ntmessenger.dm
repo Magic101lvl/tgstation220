@@ -95,7 +95,7 @@
 		photo_path = deter_path
 
 /datum/computer_file/program/messenger/ui_state(mob/user)
-	if(istype(user, /mob/living/silicon))
+	if(issilicon(user))
 		return GLOB.reverse_contained_state
 	return GLOB.default_state
 
@@ -258,6 +258,9 @@
 	if (!string_targets.len)
 		return FALSE
 
+	if (prob(1))
+		message += " Sent from my PDA"
+
 	var/datum/signal/subspace/messaging/tablet_msg/signal = new(computer, list(
 		"name" = fake_name || computer.saved_identification,
 		"job" = fake_job || computer.saved_job,
@@ -353,7 +356,7 @@
 		if(signal.data["emojis"] == TRUE)//so will not parse emojis as such from pdas that don't send emojis
 			inbound_message = emoji_parse(inbound_message)
 
-		if(ringer_status && L.is_literate())
+		if(L.is_literate())
 			to_chat(L, "<span class='infoplain'>[icon2html(src)] <b>PDA message from [hrefstart][signal.data["name"]] ([signal.data["job"]])[hrefend], </b>[inbound_message] [reply]</span>")
 
 
